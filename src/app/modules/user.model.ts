@@ -43,10 +43,11 @@ const TOrders = new Schema<TOrders>({
 });
 
 const UserSchema = new Schema<TUser>({
-  userId: { type: Number, required: true },
+  userId: { type: Number, required: true, unique: true },
   username: {
     type: String,
     required: true,
+    unique: true,
   },
   password: {
     type: String,

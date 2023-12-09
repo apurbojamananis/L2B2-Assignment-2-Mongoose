@@ -3,9 +3,10 @@ import { UserService } from "./user.service";
 
 const CreateUser = async (req: Request, res: Response) => {
   try {
-    const { user: UserData } = req.body;
+    // const { user: UserData } = req.body;
+    const UserData = req.body;
 
-    const result = await UserService.createUserDB(UserData);
+    const result = await UserService.createUserInDB(UserData);
 
     res.status(200).json({
       success: true,
@@ -17,6 +18,69 @@ const CreateUser = async (req: Request, res: Response) => {
   }
 };
 
+const getAllUser = async (req: Request, res: Response) => {
+  try {
+    const result = await UserService.getUserFromDB();
+    res.status(200).json({
+      success: true,
+      message: "User fetched successfully!",
+      data: result,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const getSingleUser = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+    const result = await UserService.getSingleUserFromDB(parseInt(userId));
+    res.status(200).json({
+      success: true,
+      message: "User fetched successfully!",
+      data: result,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const updateSingleUser = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+    const UserData = req.body;
+    const result = await UserService.updateSingleUserFromDB(
+      parseInt(userId),
+      UserData
+    );
+    res.status(200).json({
+      success: true,
+      message: "User updated successfully!",
+      data: result,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const deleteSingleUser = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+    const result = await UserService.deleteSingleUserFromDB(parseInt(userId));
+    res.status(200).json({
+      success: true,
+      message: "User deleted successfully!",
+      data: result,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const userControllers = {
   CreateUser,
+  getAllUser,
+  getSingleUser,
+  updateSingleUser,
+  deleteSingleUser,
 };
