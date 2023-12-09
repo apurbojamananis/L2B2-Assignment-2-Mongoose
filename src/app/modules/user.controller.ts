@@ -5,9 +5,7 @@ const CreateUser = async (req: Request, res: Response) => {
   try {
     // const { user: UserData } = req.body;
     const UserData = req.body;
-
     const result = await UserService.createUserInDB(UserData);
-
     res.status(200).json({
       success: true,
       message: "User created successfully!",
@@ -77,10 +75,31 @@ const deleteSingleUser = async (req: Request, res: Response) => {
   }
 };
 
+// Oder Controller
+
+const createOder = async (req: Request, res: Response) => {
+  try {
+    // const { user: UserData } = req.body;
+    const { userId } = req.params;
+    const orderData = req.body;
+
+    const result = await UserService.createOrderInDB(userId, orderData);
+
+    res.status(200).json({
+      success: true,
+      message: "Order created successfully!",
+      data: result,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const userControllers = {
   CreateUser,
   getAllUser,
   getSingleUser,
   updateSingleUser,
   deleteSingleUser,
+  createOder,
 };
