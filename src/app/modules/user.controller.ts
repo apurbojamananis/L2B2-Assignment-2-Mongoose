@@ -77,7 +77,7 @@ const deleteSingleUser = async (req: Request, res: Response) => {
 
 // Oder Controller
 
-const createOder = async (req: Request, res: Response) => {
+const createOrder = async (req: Request, res: Response) => {
   try {
     // const { user: UserData } = req.body;
     const { userId } = req.params;
@@ -95,11 +95,43 @@ const createOder = async (req: Request, res: Response) => {
   }
 };
 
+const getAllOrder = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+    const result = await UserService.getAllOrderFromDB(userId);
+
+    res.status(200).json({
+      success: true,
+      message: "Order fetched successfully!",
+      data: result,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const getTotalPrice = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+    const result = await UserService.getTotalPriceFromDB(userId);
+
+    res.status(200).json({
+      success: true,
+      message: "Order fetched successfully!",
+      data: result,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const userControllers = {
   CreateUser,
   getAllUser,
   getSingleUser,
   updateSingleUser,
   deleteSingleUser,
-  createOder,
+  createOrder,
+  getAllOrder,
+  getTotalPrice,
 };

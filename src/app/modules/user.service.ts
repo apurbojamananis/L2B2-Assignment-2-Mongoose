@@ -43,6 +43,32 @@ const createOrderInDB = async (id: string, order: TOrders) => {
   return result;
 };
 
+const getAllOrderFromDB = async (id: string) => {
+  const result = await UserModel.findOne({ userId: id }).select({
+    orders: 1,
+    _id: 0,
+  });
+  return result;
+};
+
+const getTotalPriceFromDB = async (id: string) => {
+  const result = await UserModel.findOne({ userId: id }).select({
+    orders: 1,
+    _id: 0,
+  });
+
+  const data: any = result;
+
+  const totalPrice = data?.orders.reduce(
+    (acc: number, order: TOrders) => acc + order.price * order.quantity,
+    0
+  );
+
+  return {
+    totalPrice: totalPrice,
+  };
+};
+
 export const UserService = {
   createUserInDB,
   getUserFromDB,
@@ -50,4 +76,6 @@ export const UserService = {
   updateSingleUserFromDB,
   deleteSingleUserFromDB,
   createOrderInDB,
+  getAllOrderFromDB,
+  getTotalPriceFromDB,
 };

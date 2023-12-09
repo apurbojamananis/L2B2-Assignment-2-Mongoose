@@ -11,6 +11,8 @@ router.put("/:userId", userControllers.updateSingleUser);
 router.delete("/:userId", userControllers.deleteSingleUser);
 
 // Product APIs
-router.put("/:userId/orders", userControllers.createOder);
+router.put("/:userId/orders", userControllers.createOrder);
+router.get("/:userId/orders", userControllers.getAllOrder);
+router.get("/:userId/total-price", userControllers.getTotalPrice);
 
 export const userRoutes = router;
