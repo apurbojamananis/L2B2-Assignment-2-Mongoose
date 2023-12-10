@@ -1,18 +1,26 @@
 import { Request, Response } from "express";
 import { UserService } from "./user.service";
+import userValidationSchema from "./user.zodValidation";
 
+
+// create user function
 const CreateUser = async (req: Request, res: Response) => {
   try {
     // const { user: UserData } = req.body;
     const UserData = req.body;
-    const result = await UserService.createUserInDB(UserData);
+    const zodValidationData = userValidationSchema.parse(UserData);
+    const result = await UserService.createUserInDB(zodValidationData);
     res.status(200).json({
       success: true,
       message: "User created successfully!",
       data: result,
     });
-  } catch (error) {
-    console.log(error);
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: error.message || "something went wrong",
+      error: error,
+    });
   }
 };
 
@@ -24,11 +32,14 @@ const getAllUser = async (req: Request, res: Response) => {
       message: "User fetched successfully!",
       data: result,
     });
-  } catch (error) {
-    console.log(error);
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: error.message || "something went wrong",
+      error: error,
+    });
   }
 };
-
 const getSingleUser = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
@@ -39,7 +50,11 @@ const getSingleUser = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (error) {
-    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: error.message || "something went wrong",
+      error: error,
+    });
   }
 };
 
@@ -57,7 +72,11 @@ const updateSingleUser = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (error) {
-    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: error.message || "something went wrong",
+      error: error,
+    });
   }
 };
 
@@ -71,7 +90,11 @@ const deleteSingleUser = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (error) {
-    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: error.message || "something went wrong",
+      error: error,
+    });
   }
 };
 
@@ -91,7 +114,11 @@ const createOrder = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (error) {
-    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: error.message || "something went wrong",
+      error: error,
+    });
   }
 };
 
@@ -106,7 +133,11 @@ const getAllOrder = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (error) {
-    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: error.message || "something went wrong",
+      error: error,
+    });
   }
 };
 
@@ -121,7 +152,11 @@ const getTotalPrice = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (error) {
-    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: error.message || "something went wrong",
+      error: error,
+    });
   }
 };
 
