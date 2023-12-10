@@ -13,8 +13,12 @@ const getUserFromDB = async () => {
 };
 
 const getSingleUserFromDB = async (userId: number) => {
-  const result = await UserModel.findOne({ userId });
-  return result;
+  if (await UserModel.isUserExists(userId)) {
+    const result = await UserModel.findOne({ userId });
+    return result;
+  } else {
+    throw new Error();
+  }  
 };
 
 const updateSingleUserFromDB = async (userId: number, UserData: TUser) => {

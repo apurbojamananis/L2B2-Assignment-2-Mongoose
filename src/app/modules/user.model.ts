@@ -1,5 +1,11 @@
 import { Schema, model } from "mongoose";
-import { TUser, TFullName, TAddress, TOrders } from "./user.interface";
+import {
+  TUser,
+  TFullName,
+  TAddress,
+  TOrders,
+  UserInterfaceModel,
+} from "./user.interface";
 
 const fullNameSchema = new Schema<TFullName>({
   firstName: {
@@ -42,7 +48,7 @@ const TOrders = new Schema<TOrders>({
   },
 });
 
-const UserSchema = new Schema<TUser>({
+const UserSchema = new Schema<TUser, UserInterfaceModel>({
   userId: { type: Number, required: true, unique: true },
   username: {
     type: String,
@@ -83,4 +89,11 @@ const UserSchema = new Schema<TUser>({
   },
 });
 
-export const UserModel = model<TUser>("User", UserSchema);
+// create custom static method
+
+UserSchema.statics.isUserExists = async function (userId: number) {
+  const existingUser = await UserModel.findOne({ userId });
+  return existingUser;
+};
+
+export const UserModel = model<TUser, UserInterfaceModel>("User", UserSchema);

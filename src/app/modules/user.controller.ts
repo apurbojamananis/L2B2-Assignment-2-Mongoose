@@ -51,10 +51,13 @@ const getSingleUser = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (error: any) {
-    res.status(500).json({
+    res.status(404).json({
       success: false,
-      message: error.message || "something went wrong",
-      error: error,
+      message: "User not found",
+      error: {
+        code: 404,
+        description: "User not found!",
+      },
     });
   }
 };
