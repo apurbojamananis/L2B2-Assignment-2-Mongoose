@@ -1,6 +1,7 @@
 import { TOrders, TUser } from "./user.interface";
 import { UserModel } from "./user.model";
 
+// user service functions
 const createUserInDB = async (user: TUser) => {
   const result = await UserModel.create(user);
   return result;
@@ -27,11 +28,11 @@ const updateSingleUserFromDB = async (userId: number, UserData: TUser) => {
 };
 
 const deleteSingleUserFromDB = async (userId: number) => {
-  const result = await UserModel.updateOne({ userId }, { isDeleted: true });
+  const result = await UserModel.deleteOne({ userId });
   return result;
 };
 
-//
+//Order service functions //
 
 const createOrderInDB = async (id: string, order: TOrders) => {
   const result = await UserModel.updateOne(
@@ -56,14 +57,11 @@ const getTotalPriceFromDB = async (id: string) => {
     orders: 1,
     _id: 0,
   });
-
   const data: any = result;
-
   const totalPrice = data?.orders.reduce(
     (acc: number, order: TOrders) => acc + order.price * order.quantity,
     0
   );
-
   return {
     totalPrice: totalPrice,
   };

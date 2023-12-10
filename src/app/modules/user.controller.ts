@@ -2,11 +2,9 @@ import { Request, Response } from "express";
 import { UserService } from "./user.service";
 import userValidationSchema from "./user.zodValidation";
 
-
-// create user function
+// createUser controller
 const CreateUser = async (req: Request, res: Response) => {
   try {
-    // const { user: UserData } = req.body;
     const UserData = req.body;
     const zodValidationData = userValidationSchema.parse(UserData);
     const result = await UserService.createUserInDB(zodValidationData);
@@ -24,6 +22,7 @@ const CreateUser = async (req: Request, res: Response) => {
   }
 };
 
+// Get All user
 const getAllUser = async (req: Request, res: Response) => {
   try {
     const result = await UserService.getUserFromDB();
@@ -40,6 +39,8 @@ const getAllUser = async (req: Request, res: Response) => {
     });
   }
 };
+
+// Get single user
 const getSingleUser = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
@@ -49,7 +50,7 @@ const getSingleUser = async (req: Request, res: Response) => {
       message: "User fetched successfully!",
       data: result,
     });
-  } catch (error) {
+  } catch (error: any) {
     res.status(500).json({
       success: false,
       message: error.message || "something went wrong",
@@ -58,6 +59,7 @@ const getSingleUser = async (req: Request, res: Response) => {
   }
 };
 
+// update user
 const updateSingleUser = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
@@ -71,7 +73,7 @@ const updateSingleUser = async (req: Request, res: Response) => {
       message: "User updated successfully!",
       data: result,
     });
-  } catch (error) {
+  } catch (error: any) {
     res.status(500).json({
       success: false,
       message: error.message || "something went wrong",
@@ -80,6 +82,7 @@ const updateSingleUser = async (req: Request, res: Response) => {
   }
 };
 
+// delete user
 const deleteSingleUser = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
@@ -87,9 +90,9 @@ const deleteSingleUser = async (req: Request, res: Response) => {
     res.status(200).json({
       success: true,
       message: "User deleted successfully!",
-      data: result,
+      data: null,
     });
-  } catch (error) {
+  } catch (error: any) {
     res.status(500).json({
       success: false,
       message: error.message || "something went wrong",
@@ -98,22 +101,19 @@ const deleteSingleUser = async (req: Request, res: Response) => {
   }
 };
 
-// Oder Controller
-
+// Oder Controller //
+// create order
 const createOrder = async (req: Request, res: Response) => {
   try {
-    // const { user: UserData } = req.body;
     const { userId } = req.params;
     const orderData = req.body;
-
     const result = await UserService.createOrderInDB(userId, orderData);
-
     res.status(200).json({
       success: true,
       message: "Order created successfully!",
       data: result,
     });
-  } catch (error) {
+  } catch (error: any) {
     res.status(500).json({
       success: false,
       message: error.message || "something went wrong",
@@ -122,17 +122,17 @@ const createOrder = async (req: Request, res: Response) => {
   }
 };
 
+// get all order
 const getAllOrder = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
     const result = await UserService.getAllOrderFromDB(userId);
-
     res.status(200).json({
       success: true,
       message: "Order fetched successfully!",
       data: result,
     });
-  } catch (error) {
+  } catch (error: any) {
     res.status(500).json({
       success: false,
       message: error.message || "something went wrong",
@@ -141,6 +141,7 @@ const getAllOrder = async (req: Request, res: Response) => {
   }
 };
 
+// get total price
 const getTotalPrice = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
@@ -151,7 +152,7 @@ const getTotalPrice = async (req: Request, res: Response) => {
       message: "Order fetched successfully!",
       data: result,
     });
-  } catch (error) {
+  } catch (error: any) {
     res.status(500).json({
       success: false,
       message: error.message || "something went wrong",
