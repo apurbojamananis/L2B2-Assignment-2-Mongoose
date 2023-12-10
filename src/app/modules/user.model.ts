@@ -51,10 +51,10 @@ const TOrders = new Schema<TOrders>({
 });
 
 const UserSchema = new Schema<TUser, UserInterfaceModel>({
-  userId: { type: Number, required: true, unique: true },
+  userId: { type: Number, required: [true, "Invalid User Id"], unique: true },
   username: {
     type: String,
-    required: true,
+    required: [true, "Username taken Already! Try Another"],
     unique: true,
   },
   password: {
@@ -72,7 +72,8 @@ const UserSchema = new Schema<TUser, UserInterfaceModel>({
   },
   email: {
     type: String,
-    required: true,
+    required: [true, "Invalid email address"],
+    unique: true,
   },
   isActive: {
     type: Boolean,
@@ -95,7 +96,37 @@ const UserSchema = new Schema<TUser, UserInterfaceModel>({
 
 UserSchema.pre("save", async function (next) {
   const user = this;
-  user.password = await bcrypt.hash(user.password, Number(config.saltRound));
+  user.password = await bcrypt.hash(
+    user.password,
+    Number(config.bcrypt_salt_round)
+  );
+  next();
+});
+
+UserSchema.pre("findOneAndUpdate", async function (next) {
+// get updated data
+  const updateData: any = this.getUpdate();
+
+  // hash password
+  updateData.$set.password = await bcrypt.hash(
+    updateData.$set.password,
+    Number(config.bcrypt_salt_round)
+  );
+
+  next();
+});
+
+UserSchema.post("save", function (doc, next) {
+  doc.password = "";
+  next();
+});
+
+UserSchema.pre("find", function (next) {
+  this.find().select({ password: 0, orders: 0, __v: 0, _id: 0 });
+  next();
+});
+UserSchema.pre("findOne", function (next) {
+  this.find().select({ password: 0, __v: 0, _id: 0 });
   next();
 });
 

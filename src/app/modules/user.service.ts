@@ -8,7 +8,11 @@ const createUserInDB = async (user: TUser) => {
 };
 
 const getUserFromDB = async () => {
-  const result = await UserModel.find();
+  const result = await UserModel.find().select({
+    userId: 0,
+    isActive: 0,
+    hobbies: 0,
+  });
   return result;
 };
 
@@ -17,7 +21,9 @@ const getSingleUserFromDB = async (userId: number) => {
   if (!existingUser) {
     throw new Error();
   } else {
-    const result = await UserModel.findOne({ userId });
+    const result = await UserModel.findOne({ userId }).select({
+      orders: 0,
+    });
     return result;
   }
 };
@@ -27,12 +33,8 @@ const updateSingleUserFromDB = async (userId: number, UserData: TUser) => {
   if (!existingUser) {
     throw new Error();
   } else {
-    const result = await UserModel.updateOne(
-      { userId: userId },
-      {
-        $set: UserData,
-      }
-    );
+    await UserModel.findOneAndUpdate({ userId }, { $set: UserData });
+    const result = await UserModel.findOne({ userId }).select({ orders: 0 });
     return result;
   }
 };
@@ -42,7 +44,7 @@ const deleteSingleUserFromDB = async (userId: number) => {
   if (!existingUser) {
     throw new Error();
   } else {
-    const result = await UserModel.deleteOne({ userId });
+    const result = await UserModel.deleteOne({ userId }).select({ orders: 0 });
     return result;
   }
 };
