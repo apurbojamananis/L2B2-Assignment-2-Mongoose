@@ -13,6 +13,6 @@ router.delete("/:userId", userControllers.deleteSingleUser);
 // Product APIs
 router.put("/:userId/orders", userControllers.createOrder);
 router.get("/:userId/orders", userControllers.getAllOrder);
-router.get("/:userId/total-price", userControllers.getTotalPrice);
+router.get("/:userId/orders/total-price", userControllers.getTotalPrice);
 
 export const userRoutes = router;
