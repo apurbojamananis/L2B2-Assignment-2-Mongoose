@@ -1,4 +1,5 @@
 import { Schema, model } from "mongoose";
+import bcrypt from "bcrypt";
 import {
   TUser,
   TFullName,
@@ -6,6 +7,7 @@ import {
   TOrders,
   UserInterfaceModel,
 } from "./user.interface";
+import config from "../config";
 
 const fullNameSchema = new Schema<TFullName>({
   firstName: {
@@ -90,6 +92,12 @@ const UserSchema = new Schema<TUser, UserInterfaceModel>({
 });
 
 // create custom static method
+
+UserSchema.pre("save", async function (next) {
+  const user = this;
+  user.password = await bcrypt.hash(user.password, Number(config.saltRound));
+  next();
+});
 
 UserSchema.statics.isUserExists = async function (userId: number) {
   const existingUser = await UserModel.findOne({ userId });
