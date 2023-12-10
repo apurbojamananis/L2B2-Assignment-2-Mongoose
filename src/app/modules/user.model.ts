@@ -104,7 +104,7 @@ UserSchema.pre("save", async function (next) {
 });
 
 UserSchema.pre("findOneAndUpdate", async function (next) {
-// get updated data
+  // get updated data
   const updateData: any = this.getUpdate();
 
   // hash password

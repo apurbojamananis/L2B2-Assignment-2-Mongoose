@@ -21,9 +21,7 @@ const getSingleUserFromDB = async (userId: number) => {
   if (!existingUser) {
     throw new Error();
   } else {
-    const result = await UserModel.findOne({ userId }).select({
-      orders: 0,
-    });
+    const result = await UserModel.findOne({ userId });
     return result;
   }
 };
@@ -34,7 +32,7 @@ const updateSingleUserFromDB = async (userId: number, UserData: TUser) => {
     throw new Error();
   } else {
     await UserModel.findOneAndUpdate({ userId }, { $set: UserData });
-    const result = await UserModel.findOne({ userId }).select({ orders: 0 });
+    const result = await UserModel.findOne({ userId });
     return result;
   }
 };
@@ -44,7 +42,7 @@ const deleteSingleUserFromDB = async (userId: number) => {
   if (!existingUser) {
     throw new Error();
   } else {
-    const result = await UserModel.deleteOne({ userId }).select({ orders: 0 });
+    const result = await UserModel.deleteOne({ userId });
     return result;
   }
 };

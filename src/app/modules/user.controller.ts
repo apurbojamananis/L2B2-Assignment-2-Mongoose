@@ -28,7 +28,7 @@ const getAllUser = async (req: Request, res: Response) => {
     const result = await UserService.getUserFromDB();
     res.status(200).json({
       success: true,
-      message: "User fetched successfully!",
+      message: "Users fetched successfully!",
       data: result,
     });
   } catch (error: any) {
@@ -124,7 +124,7 @@ const createOrder = async (req: Request, res: Response) => {
     res.status(200).json({
       success: true,
       message: "Order created successfully!",
-      data: result,
+      data: null,
     });
   } catch (error: any) {
     res.status(500).json({
@@ -162,10 +162,10 @@ const getTotalPrice = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
     const result = await UserService.getTotalPriceFromDB(parseInt(userId));
-    
+
     res.status(200).json({
       success: true,
-      message: "Order fetched successfully!",
+      message: "Total price calculated successfully!",
       data: result,
     });
   } catch (error: any) {
