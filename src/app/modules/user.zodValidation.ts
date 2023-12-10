@@ -1,21 +1,21 @@
-import { z } from "zod";
+import { z } from 'zod'
 
 const fullNameZodValidationSchema = z.object({
   firstName: z.string(),
   lastName: z.string(),
-});
+})
 
 const addressZodValidationSchema = z.object({
   street: z.string(),
   city: z.string(),
   country: z.string(),
-});
+})
 
 const ordersZodValidationSchema = z.object({
   productName: z.string(),
   price: z.number(),
   quantity: z.number(),
-});
+})
 
 export const userValidationSchema = z.object({
   userId: z.number(),
@@ -28,6 +28,6 @@ export const userValidationSchema = z.object({
   hobbies: z.array(z.string()),
   address: addressZodValidationSchema,
   orders: z.array(ordersZodValidationSchema).optional(),
-});
+})
 
-export default userValidationSchema;
+export default userValidationSchema
