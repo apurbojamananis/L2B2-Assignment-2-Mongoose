@@ -37,3 +37,5 @@
 `npm run prettier`
 
 `npm run prettier:fix`
+
+## [Liver Server](https://l2-b2-assignment-2-mongoose.vercel.app/)
